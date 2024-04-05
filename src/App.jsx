@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { apiCall } from './request';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <>
+      <button onClick={apiCall}>Make API Call</button>
       <h1>My bookmarking app</h1>
       <form onSubmit={handleSubmit}>
         <label>Enter URL:
