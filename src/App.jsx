@@ -1,31 +1,37 @@
-import { useState } from 'react'
-import './App.css'
-import { apiCall } from './request';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { getMostRecentBookmark } from "./request";
 
 function App() {
+  const [bookmark, setBookmark] = useState();
+  const [mostRecentBookmark, setMostRecentBookmark] = useState();
 
-  const [bookmarkUrl, setBookmarkUrl] = useState();
+  useEffect(() => {
+    getMostRecentBookmark(setMostRecentBookmark);
+  }, []);
 
-  const handleSubmit = function() {
-    alert(`A new url was submitted: ${bookmarkUrl}`);
-  }
+  const handleSubmit = function () {
+    alert(`A new url was submitted: ${bookmark}`);
+  };
 
-  const handleChange = function(event) {
-    setBookmarkUrl(event.target.value);
-  }
+  const handleChange = function (event) {
+    setBookmark(event.target.value);
+  };
 
   return (
     <>
-      <button onClick={apiCall}>Make API Call</button>
       <h1>My bookmarking app</h1>
       <form onSubmit={handleSubmit}>
-        <label>Enter URL:
-          <input type="text" name="url-text" onChange={handleChange}/>
+        <label>
+          Enter URL:
+          <input type="text" name="url-text" onChange={handleChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>
+      <div>Most recently saved bookmark:</div>
+      <span>{mostRecentBookmark}</span>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
