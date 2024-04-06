@@ -1,32 +1,34 @@
-import postgresql from "pg";
-const { Pool } = postgresql;
+// This should be where ORM lives
 
-export default (callback = null) => {
-  const pool = new Pool({
-    user: "mydb_role",
-    password: "some_password",
-    host: "localhost",
-    port: 5432,
-    database: "mydb",
-  });
+import pg from "pg";
+const { Pool } = pg;
 
-  const connection = {
-    pool,
-    query: (...args) => {
-      return pool.connect().then((client) => {
-        return client.query(...args).then((res) => {
-          client.release();
-          return res.rows;
-        });
-      });
-    },
-  };
+const pool = new Pool({
+  user: "mydb_role",
+  password: "some_password",
+  host: "127.0.0.1",
+  port: 5432,
+  database: "mydb",
+});
 
-  process.postgresql = connection;
+async function getAllBookmarks() {
+  const result = await pool.query("SELECT * FROM bookmarks;");
+  return result;
+}
 
-  if (callback) {
-    callback(connection);
-  }
+async function getMostRecentBookmark() {
+  const result = await pool.query(
+    "SELECT * FROM bookmarks WHERE id=(SELECT max(id) FROM bookmarks)"
+  );
+  return result;
+}
 
-  return connection;
-};
+async function createBookmark(bookmark) {
+  const result = await pool.query(
+    `INSERT INTO bookmarks(bookmark) VALUES('${bookmark}');`
+  );
+  return result;
+}
+
+const result = await getAllBookmarks();
+console.log(result);
