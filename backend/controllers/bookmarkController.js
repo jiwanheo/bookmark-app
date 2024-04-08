@@ -13,17 +13,17 @@ export async function getMostRecentBookmark(req, res) {
   res.send(result.rows);
 }
 
-export async function createBookmark(req, res) {
+export async function postBookmark(req, res) {
   // get the bookmark param off request
-  const newBookmark = req.params.bookmark;
+  const newBookmark = req.body.bookmark;
   const result = await pool.query(
     `INSERT INTO bookmarks(bookmark) VALUES('${newBookmark}');`
   );
-  res.send("Bookmark created!");
+  res.send(result);
 }
 
 export const bookmarkController = {
   getAllBookmarks: getAllBookmarks,
   getMostRecentBookmark: getMostRecentBookmark,
-  createBookmark: createBookmark,
+  postBookmark: postBookmark,
 };

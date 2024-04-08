@@ -22,18 +22,32 @@ function App() {
     setBookmark(event.target.value);
   };
 
-  const handleButtonClick = function () {
-    bookmarkStore.fetchAllBookmarks(setAllBookmarks);
+  // Create new bookmark, by sending `createBookmark` POST request
+  const handleFormSubmit = function (e) {
+    // React default behaviour is that on form submit, the entire page refreshes
+    // we'll need to suppress it, so the request goes through
+    e.preventDefault();
+
+    // Send the post request, and update `mostRecentBookmark`
+    bookmarkStore.createBookmark(bookmark, setMostRecentBookmark);
+
+    // Clear form
+    e.target.reset();
   };
+
+  // When mostRecentBookmark is updated via the `createBookmark` POST request,
+  // allBookmarks should be updated, by executing the `fetchAllBookmarks` GET request again
+  useEffect(() => {
+    bookmarkStore.fetchAllBookmarks(setAllBookmarks);
+  }, [mostRecentBookmark]);
 
   return (
     <>
       <h1>My bookmarking app</h1>
-      <button onClick={handleButtonClick}>Click me</button>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <label>
           Enter URL:
-          <input type="text" name="url-text" onChange={handleChange} />
+          <input type="text" name="url-text" onChange={handleTextChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>

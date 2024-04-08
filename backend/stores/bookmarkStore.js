@@ -14,13 +14,14 @@ const fetchAllBookmarks = (setFunc) => {
   });
 };
 
-const createBookmark = (newBookmark) => {
+// setFunc here sets `mostRecentBookmark`
+const createBookmark = (bookmark, setFunc) => {
   axios
     .post("http://localhost:8080/create-bookmark", {
-      bookmark: newBookmark,
+      bookmark: bookmark,
     })
     .then((res) => {
-      console.log(res);
+      setFunc(bookmark);
     });
 };
 
