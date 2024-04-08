@@ -7,18 +7,14 @@ function App() {
   const [mostRecentBookmark, setMostRecentBookmark] = useState();
   const [allBookmarks, setAllBookmarks] = useState();
 
+  // Upon app load, get `mostRecentBookmark` & `allBookmarks` for the first time
   useEffect(() => {
     bookmarkStore.fetchMostRecentBookmark(setMostRecentBookmark);
     bookmarkStore.fetchAllBookmarks(setAllBookmarks);
   }, []);
 
-  const handleSubmit = function () {
-    alert(`A new url was submitted: ${bookmark}`);
-    bookmarkStore.createBookmark(bookmark);
-    bookmarkStore.fetchMostRecentBookmark(setMostRecentBookmark);
-  };
-
-  const handleChange = function (event) {
+  // Every user keystroke updates `bookmark`
+  const handleTextChange = function (event) {
     setBookmark(event.target.value);
   };
 
@@ -51,15 +47,17 @@ function App() {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <div>Most recently saved bookmark:</div>
+
+      <h2>Most recently saved bookmark:</h2>
       <span>{mostRecentBookmark}</span>
-      <div>All bookmarks</div>
+
+      <h2>All bookmarks</h2>
       <div id="all-bookmarks">
         <table>
           <thead>
             <tr>
-              <td>id</td>
-              <td>bookmark</td>
+              <th>id</th>
+              <th>bookmark</th>
             </tr>
           </thead>
           <tbody>
