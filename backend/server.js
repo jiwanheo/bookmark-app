@@ -6,12 +6,7 @@ import { bookmarkController } from "./controllers/bookmarkController.js";
 const app = express();
 const port = 8080;
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  }),
-  bodyParser.json()
-);
+app.use(cors(), bodyParser.json());
 
 app.use((req, res, next) => {
   console.log("Incoming request headers");
