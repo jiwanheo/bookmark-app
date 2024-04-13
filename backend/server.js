@@ -6,13 +6,15 @@ import { bookmarkController } from "./controllers/bookmarkController.js";
 const app = express();
 const port = 8080;
 
-app.use(cors(), bodyParser.json());
+if (process.env.NODE_ENV == "development") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+    })
+  );
+}
 
-app.use((req, res, next) => {
-  console.log("Incoming request headers");
-  console.log(req.headers);
-  next();
-});
+app.use(bodyParser.json());
 
 app.get("/bookmark", bookmarkController.getMostRecentBookmark);
 app.get("/all-bookmarks", bookmarkController.getAllBookmarks);
