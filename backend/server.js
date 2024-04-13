@@ -13,6 +13,12 @@ app.use(
   bodyParser.json()
 );
 
+app.use((req, res, next) => {
+  console.log("Incoming request headers");
+  console.log(req.headers);
+  next();
+});
+
 app.get("/bookmark", bookmarkController.getMostRecentBookmark);
 app.get("/all-bookmarks", bookmarkController.getAllBookmarks);
 app.post("/create-bookmark", bookmarkController.postBookmark);
