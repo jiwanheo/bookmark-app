@@ -6,14 +6,13 @@ import { bookmarkController } from "./controllers/bookmarkController.js";
 const app = express();
 const port = 8080;
 
-// if (process.env.NODE_ENV == "development") {
-//   console.log("in dev");
-//   app.use(
-//     cors({
-//       origin: "http://localhost:5173",
-//     })
-//   );
-// }
+if (process.env.NODE_ENV == "development") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+    })
+  );
+}
 
 app.use(bodyParser.json());
 
