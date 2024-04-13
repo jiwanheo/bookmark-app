@@ -1,14 +1,19 @@
 import axios from "axios";
 
+console.log(process.env.NODE_ENV);
+
+const apiBase =
+  process.env.NODE_ENV == "development" ? "http://localhost:8080" : "/api";
+
 const fetchMostRecentBookmark = (setFunc) => {
-  axios.get("http://localhost:8080/bookmark").then((res) => {
+  axios.get(`${apiBase}/bookmark`).then((res) => {
     const bookmarkValue = res.data.map((row) => row.bookmark);
     setFunc(bookmarkValue);
   });
 };
 
 const fetchAllBookmarks = (setFunc) => {
-  axios.get("http://localhost:8080/all-bookmarks").then((res) => {
+  axios.get(`${apiBase}/all-bookmarks`).then((res) => {
     const bookmarks = res.data;
     setFunc(bookmarks);
   });
@@ -17,7 +22,7 @@ const fetchAllBookmarks = (setFunc) => {
 // setFunc here sets `mostRecentBookmark`
 const createBookmark = (bookmark, setFunc) => {
   axios
-    .post("http://localhost:8080/create-bookmark", {
+    .post(`${apiBase}/create-bookmark`, {
       bookmark: bookmark,
     })
     .then((res) => {
