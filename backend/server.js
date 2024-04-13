@@ -8,7 +8,7 @@ const port = 8080;
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://18.118.31.181/"],
+    origin: "http://localhost:5173",
   }),
   bodyParser.json()
 );
