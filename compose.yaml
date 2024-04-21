@@ -1,0 +1,50 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/usr/src/bookmark-app/
+      - /usr/src/bookmark-app/node_modules
+  postgres:
+    image: postgres:16.2
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+  # nginx:
+  #   build:
+  #     context: nginx
+  #   container_name: nginx
+  #   restart: always
+  #   tty: true
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - backend
+  #     - postgres
+  # pgadmin-compose:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "placeholder@example.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "fakepassword123!"
+  #   ports:
+  #     - "16543:80"
+  #   depends_on:
+  #     - postgres
