@@ -8,8 +8,9 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  app:
-    build: .
+  backend:
+    build:
+      context: .
     depends_on:
       - postgres
     ports:
@@ -28,17 +29,19 @@ services:
       - "5432:5432"
     volumes:
       - ./database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
-  # nginx:
-  #   build:
-  #     context: nginx
-  #   container_name: nginx
-  #   restart: always
-  #   tty: true
-  #   ports:
-  #     - "80:80"
-  #   depends_on:
-  #     - backend
-  #     - postgres
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    restart: always
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/usr/src/bookmark-app/
+    depends_on:
+      - backend
+      - postgres
   # pgadmin-compose:
   #   image: dpage/pgadmin4
   #   environment:
